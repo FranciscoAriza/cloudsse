@@ -71,9 +71,9 @@ For a quick test, create folder and store some input files, needed jars and test
 
 + Start by testing the simplest method, by running the TestLocalRR2Lev.java file. Note that in this case the operation is static; so you only have an initial set of documents, then the associated index is created and finally you can search based on keywords of your choice. Study the associated implementation and understand the constructEMMParGMM and Token methods of the RR2Lev.java class
 
-+Now, try the second scheme that is in the TestLocalDynRH.java class. In this case, you will notice that it is possible to include new files to index or delete previously inserted documents. In order to understand the associated changes and the impact of these updates, be sure to understand the tokenUpdate, resolve and delTokenFS methods of the DynRH.java class
++ Now, try the second scheme that is in the TestLocalDynRH.java class. In this case, you will notice that it is possible to include new files to index or delete previously inserted documents. In order to understand the associated changes and the impact of these updates, be sure to understand the tokenUpdate, resolve and delTokenFS methods of the DynRH.java class
 
-+Finally, if you want to understand in detail the way in which the corresponding indexes are made, run the TextIndexing.java file
++ Finally, if you want to understand in detail the way in which the corresponding indexes are made, run the TextIndexing.java file
 
 
 ## References
