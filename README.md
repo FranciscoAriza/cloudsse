@@ -1,4 +1,8 @@
-# The Clusion Library
+# Searchable symmetric encryption (SSE) Lab
+
+SSE allows you to store information at an untrusted server, so you can make further inquiries about this information, guaranteeing your privacy throughout the process. In this Lab, you will work with two implementations of this technique, in order to understand the foundations on which it is built as well as the data structures and security primitives that are needed for its development. To do so, we will use a Library called Clusion that implements different variations of SSE.
+
+## The Clusion Library
 
 Clusion is an easy to use software library for searchable symmetric encryption
 (SSE). Its goal is to provide modular implementations of various
@@ -30,37 +34,16 @@ In addition, it also contains an
 implementation of the HCB1 online cipher from \[[BBKN07][BBKN07]\]. 
 
 
+## Schemes to test 
 
-The following SSE schemes are implemented:
+In this Lab, you will test the following SSE schemes:
 
 + **2Lev**:  a static and I/O-efficient SSE scheme \[[CJJJKRS14][CJJJKRS14]]\. 
 
 + **Dyn2Lev**:  a dynamic variation of \[[CJJJKRS14][CJJJKRS14]], comes with two instantiations, a first instantiation that 
 only handles add operations, and a second one that handles delete operations in addition. Both instantiations have forward-security guarantees but at the cost of more interactions and non-optimality (in the case of delete). 
 
-+ **BIEX-2Lev**: a  worst-case sub-linear boolean SSE scheme \[[KM17][KM17]\].
-  This implementation makes use of 2Lev as a building block.  The
-disjunctive-only IEX-2Lev construction from \[[KM17][KM17]\] is a special case
-of IEX^B-2Lev where the number of disjunctions is set to 1 in the Token
-algorithm.
-
-+ **ZMF**: a compact single-keyword SSE scheme 
-  (with linear search complexity) \[[KM17][KM17]\]. The construction is
-inspired by  the Z-IDX construction \[[Goh03][Goh03]\] but handles
-variable-sized collections of Bloom filters called *Matryoshka filters*. ZMF
-also makes a non-standard use of online ciphers.  Here, we implemented the
-HCBC1 construction from  \[[BBKN07][BBKN07]\] but would like to replace this
-with the more efficient COPE scheme from \[[ABLMTY13][ABLMTY13]\]. 
-
-+ **BIEX-ZMF**: a compact worst-case optimal boolean SSE scheme. Like our
-  IEX^B-2Lev implementation, the purely disjunctive variant IEX-ZMF is a special case with the number of disjunctions set to 1. 
-
-+ **IEX-2Lev-Amazon**: a distributed implementation of text indexing based on MapReduce/Hadoop
-on [Amazon AWS](https://aws.amazon.com/fr/). 
-
-+ We also plan to share our Client-Server implementation for 2Lev, Dyn2Lev, IEX^B-2Lev, IEX^B-ZMF once finalized. 
-
-## Build Instructions
+## Build Instructions (Option 1)
 
 + Install Java (1.7 or above)
 + Install Maven (3.3.9 or above)
@@ -77,109 +60,26 @@ on [Amazon AWS](https://aws.amazon.com/fr/).
 	
 + If the above file exists, build was successful and contains all dependencies
 
-## Quick Test
 
-For a quick test, create folder and store some input files, needed jars and test classes are already created
+## Build Instructions (Option 2)
 
-+ export Java classpath
+In order to test the functioning of the schemes shown, while playing with the code, you can use the IDE of your preference to import the project of this repository. Remember that it is a Maven project (It is recommended to use IntelliJ IDEA)
 
-	run `export CLASSPATH=$CLASSPATH:/home/xxx/Clusion/target:/home/xxx/Clusion/target/test-classes`
-	
-	Ensure the directory paths are correct in the above
-	
-+ to test 2Lev (response-revealing)
+## Test
 
-	run `java org.crypto.sse.TestLocalRR2Lev`	
-	
-+ to test 2Lev (response-hiding)
+For a quick test, create folder and store some input files, needed jars and test classes are already created. 
 
-	run `java org.crypto.sse.TestLocalRH2Lev`	
-	
-+ to test DynRH2Lev (response-hiding)
++ Start by testing the simplest method, by running the TestLocalRR2Lev.java file. Note that in this case the operation is static; so you only have an initial set of documents, then the associated index is created and finally you can search based on keywords of your choice. Study the associated implementation and understand the constructEMMParGMM and Token methods of the RR2Lev.java class
 
-	run `java org.crypto.sse.TestLocalDynRH2Lev`	
-	
-+ to test DynRH (response-hiding)
++Now, try the second scheme that is in the TestLocalDynRH.java class. In this case, you will notice that it is possible to include new files to index or delete previously inserted documents. In order to understand the associated changes and the impact of these updates, be sure to understand the tokenUpdate, resolve and delTokenFS methods of the DynRH.java class
 
-	run `java org.crypto.sse.TestLocalDynRH`		
++Finally, if you want to understand in detail the way in which the corresponding indexes are made, run the TextIndexing.java file
 
-+ to test ZMF 
-
-	run `java org.crypto.sse.TestLocalZMF`	
-	
-+ to test IEX-2Lev 
-
-	run `java org.crypto.sse.TestLocalIEX2Lev`
-	
-+ to test IEX-2Lev (response-hiding)
-
-	run `java org.crypto.sse.TestLocalIEXRH2Lev`
-	
-+ to test IEX-ZMF 
-
-	run `java org.crypto.sse.TestLocalIEXZMF`
-	
-+ to test IEX-2Lev on Amazon 
-
-	run `java org.crypto.sse.IEX2LevAMAZON`
-
-
-## Documentation
-
-Clusion currently does not have any documentation. The best way to learn how to
-use the library is to read through the source of the test code:
-
-+ `org.crypto.sse.TestLocalRR2Lev.java`
-+ `org.crypto.sse.TestLocalRH2Lev.java`
-+ `org.crypto.sse.TestLocalDynRH2Lev.java`
-+ `org.crypto.sse.TestLocalDynRH.java`
-+ `org.crypto.sse.TestLocalZMF.java`
-+ `org.crypto.sse.TestLocalIEX2Lev.java`
-+ `org.crypto.sse.TestLocalIEXRH2Lev.java`
-+ `org.crypto.sse.TestLocalIEXZMF.java`
-
-## Requirements
-Clusion is written in Java.
-
-Below are Dependencies added via Maven (3.3.9 or above) , need not be downloaded manually
-
-+ Bouncy Castle					https://www.bouncycastle.org/
-
-+ Apache Lucene					https://lucene.apache.org/core/
-
-+ Apache PDFBox					https://pdfbox.apache.org/
-
-+ Apache POI					https://poi.apache.org/
-
-+ Google Guava					https://poi.apache.org/
-
-+ SizeOF (needed to calculate object size in Java)	http://sizeof.sourceforge.net/
-
-+ [Hadoop-2.7.1](http://hadoop.apache.org/releases.htm) was used for our
-  distributed implementation of the IEX-2Lev setup algorithm. Earlier releases
- of Hadoop may work as well but were not tested 
-
-Clusion was tested with Java version `1.7.0_75`.
 
 ## References
 
 1. \[[CJJJKRS14](https://eprint.iacr.org/2014/853.pdf)\]:  *Dynamic Searchable Encryption in Very-Large Databases: Data Structures and Implementation* by D. Cash, J. Jaeger, S. Jarecki, C. Jutla, H. Krawczyk, M. Rosu, M. Steiner.
 
-2. \[[KM17](https://eprint.iacr.org/2017/126.pdf)\]: :  *Boolean Searchable Symmetric Encryption with Worst-Case Sub-Linear Complexity* by S. Kamara and T. Moataz. 
-
-3. \[[Goh03](https://eprint.iacr.org/2003/216.pdf)\]: *Secure Indexes* by E. Goh. 
-
-4. \[[ABLMTY13](https://eprint.iacr.org/2013/790.pdf)\]: *Parallelizable and
-   Authenticated Online Ciphers* by E. Andreeva, A.  Bogdanov, A. Luykx, B.
-Mennink, E. Tischhauser, and K. Yasuda. . 
-
-5. \[[BBKN07](https://cseweb.ucsd.edu/~mihir/papers/olc.pdf)\]:  *On-Line
-   Ciphers and the Hash-CBC Constructions* by M. Bellare, A. Boldyreva, L.
-Knudsen and C. Namprempre.
-
 
 [CJJJKRS14]: https://eprint.iacr.org/2014/853.pdf
-[KM17]: https://eprint.iacr.org/2017/126.pdf
-[Goh03]: https://eprint.iacr.org/2003/216.pdf
-[ABLMTY13]: https://eprint.iacr.org/2013/790.pdf
-[BBKN07]: https://cseweb.ucsd.edu/~mihir/papers/olc.pdf
+
