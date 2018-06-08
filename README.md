@@ -47,16 +47,16 @@ only handles add operations, and a second one that handles delete operations in 
 
 + Install Java (1.7 or above)
 + Install Maven (3.3.9 or above)
-+ Download/Git clone Clusion
++ Download/Git clone this repository
 + Run below commands to build the jar
 
-	`cd Clusion`
+	`cd SSELab`
 	
 	`mvn clean install`
 	
 	`cd target`
 	
-	`ls Clusion-1.0-SNAPSHOT-jar-with-dependencies.jar`
+	`ls SSELab-1.0-SNAPSHOT-jar-with-dependencies.jar`
 	
 + If the above file exists, build was successful and contains all dependencies
 
