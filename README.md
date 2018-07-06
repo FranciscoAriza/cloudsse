@@ -69,7 +69,9 @@ In order to test the functioning of the schemes shown, while playing with the co
 
 For a quick test, create folder and store some input files, needed jars and test classes are already created. 
 
-+ Start by testing the simplest method, by running the TestLocalRR2Lev.java file. Note that in this case the operation is static; so you only have an initial set of documents, then the associated index is created and finally you can search based on keywords of your choice. Study the associated implementation and understand the constructEMMParGMM, token and query methods of the RR2Lev.java class.
++ export Java classpath: run export CLASSPATH=$CLASSPATH:/home/xxx/SSELab/target:/home/xxx/SSELab/target/test-classes
+
++ Start by testing the simplest method, by running the TestLocalRR2Lev.java file (run java org.crypto.sse.TestLocalRR2Lev). Note that in this case the operation is static; so you only have an initial set of documents, then the associated index is created and finally you can search based on keywords of your choice. Study the associated implementation and understand the constructEMMParGMM, token and query methods of the RR2Lev.java class.
 
 + Now, try the second scheme that is in the TestLocalDynRH.java class. In this case, you will notice that it is possible to include new files to index or delete previously inserted documents. In order to understand the associated changes and the impact of these updates, be sure to understand the tokenUpdate, resolve and delTokenFS methods of the DynRH.java class.
 
