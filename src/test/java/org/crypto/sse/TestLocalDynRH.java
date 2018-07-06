@@ -103,7 +103,7 @@ public class TestLocalDynRH {
 
 				System.out.println("\nElapsed time in microseconds: " + output / 1000);
 				if (result.size() > 0) {
-					System.out.println("Enter index of the identifier that you want to delete (of the array that you just see)");
+					System.out.println("Enter index of the identifier that you want to delete:");
 					String index = keyRead.readLine();
 					List<Integer> deletions = new ArrayList<Integer>();
 					deletions.add(Integer.parseInt(index));

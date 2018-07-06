@@ -68,6 +68,12 @@
       <artifactId>pdfbox</artifactId>
       <version>2.0.2</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.mapdb -->
+    <dependency>
+      <groupId>org.mapdb</groupId>
+      <artifactId>mapdb</artifactId>
+      <version>3.0.4</version>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
     <dependency>
       <groupId>org.apache.poi</groupId>
@@ -80,24 +86,24 @@
       <artifactId>guava</artifactId>
       <version>19.0</version>
     </dependency>
-      <!-- https://mvnrepository.com/artifact/com.carrotsearch/java-sizeof -->
-      <dependency>
-          <groupId>com.carrotsearch</groupId>
-          <artifactId>java-sizeof</artifactId>
-          <version>0.0.5</version>
-      </dependency>
-      <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common -->
-      <dependency>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-common</artifactId>
-          <version>2.7.1</version>
-      </dependency>
-      <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk -->
-      <dependency>
-          <groupId>com.amazonaws</groupId>
-          <artifactId>aws-java-sdk</artifactId>
-          <version>1.11.19</version>
-      </dependency>
+    <!-- https://mvnrepository.com/artifact/com.carrotsearch/java-sizeof -->
+    <dependency>
+      <groupId>com.carrotsearch</groupId>
+      <artifactId>java-sizeof</artifactId>
+      <version>0.0.5</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common -->
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-common</artifactId>
+      <version>2.7.1</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk -->
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk</artifactId>
+      <version>1.11.19</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
       <artifactId>hadoop-core</artifactId>

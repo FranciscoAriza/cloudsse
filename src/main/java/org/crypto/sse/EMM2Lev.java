@@ -46,11 +46,15 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.*;
 
-public class RH2Lev {
+public class EMM2Lev {
 
 	// define the number of characters that a file identifier can have
 	public static int sizeOfFileIdentifer = 100;
 	public static String separator = "seperator";
+
+	public static byte[] master = null;
+	public static boolean lmm = false;
+	public static String eval = "";
 
 	public static int counter = 0;
 
@@ -62,7 +66,7 @@ public class RH2Lev {
 	static byte[][] array = null;
 	byte[][] arr = null;
 
-	public RH2Lev(Multimap<String, byte[]> dictionary, byte[][] arr) {
+	public EMM2Lev(Multimap<String, byte[]> dictionary, byte[][] arr) {
 		this.dictionary = dictionary;
 		this.arr = arr;
 	}
@@ -256,7 +260,14 @@ public class RH2Lev {
 
 			// generate keys for response-hiding construction for SIV (Synthetic
 			// IV)
-			byte[] key3 = CryptoPrimitives.generateCmac(key, 3 + new String());
+			byte[] key3 = CryptoPrimitives.generateCmac(master, 3 + new String());
+
+			byte[] key4 = null;
+			if (lmm == false) {
+				key4 = CryptoPrimitives.generateCmac(master, 4 + word);
+			} else {
+				key4 = CryptoPrimitives.generateCmac(master, eval);
+			}
 
 			// Encryption of the lookup DB(w) deterministically to create unique
 			// tags
@@ -264,8 +275,8 @@ public class RH2Lev {
 			List<String> encryptedID = new ArrayList<String>();
 
 			for (String id : lookup.get(word)) {
-				random.nextBytes(iv);
-				encryptedID.add(new String(CryptoPrimitives.encryptAES_CTR_String(key3, iv, id, 20), "ISO-8859-1"));
+				encryptedID
+						.add(new String(CryptoPrimitives.DTE_encryptAES_CTR_String(key3, key4, id, 20), "ISO-8859-1"));
 			}
 
 			String encryptedIdString = "";
@@ -425,12 +436,10 @@ public class RH2Lev {
 
 	// ***********************************************************************************************//
 
-	public static byte[][] token(byte[] key, String word) throws UnsupportedEncodingException {
+	public static byte[] token(byte[] key, String word) throws UnsupportedEncodingException {
 
-		byte[][] keys = new byte[2][];
-		keys[0] = CryptoPrimitives.generateCmac(key, 1 + word);
-		keys[1] = CryptoPrimitives.generateCmac(key, 2 + word);
-
+		byte[] keys = new byte[16];
+		keys = CryptoPrimitives.generateCmac(key, 1 + word);
 		return keys;
 	}
 

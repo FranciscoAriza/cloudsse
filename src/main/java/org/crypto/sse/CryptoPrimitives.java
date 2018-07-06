@@ -150,13 +150,27 @@ public class CryptoPrimitives {
 	///////////////////// can also be used for random bit generation
 	// ***********************************************************************************************//
 
-	public static byte[] randomBytes(int sizeOfSalt) {
-		byte[] salt = new byte[sizeOfSalt];
+	public static byte[] randomBytes(int size) {
+		byte[] randomBytes = new byte[size];
 		ThreadedSeedGenerator thread = new ThreadedSeedGenerator();
 		SecureRandom random = new SecureRandom();
-		random.setSeed(thread.generateSeed(20, true));
-		random.nextBytes(salt);
-		return salt;
+		random.setSeed(thread.generateSeed(20, false));
+		random.nextBytes(randomBytes);
+		return randomBytes;
+	}
+
+	// ***********************************************************************************************//
+
+	///////////////////// Salt generation/RandomBytes: it is generated just once
+	///////////////////// and it is not necessary to keep it secret
+	///////////////////// can also be used for random bit generation
+	// ***********************************************************************************************//
+
+	public static byte[] randomSeed(int size) {
+		byte[] seed = new byte[size];
+		ThreadedSeedGenerator thread = new ThreadedSeedGenerator();
+		seed = thread.generateSeed(size, false);
+		return seed;
 	}
 
 	// ***********************************************************************************************//
@@ -249,6 +263,7 @@ public class CryptoPrimitives {
 
 	// ***********************************************************************************************//
 
+
 	public static byte[] encryptAES_CBC_String(byte[] keyBytes, byte[] ivBytes, String identifier)
 			throws InvalidKeyException, InvalidAlgorithmParameterException, NoSuchAlgorithmException,
 			NoSuchProviderException, NoSuchPaddingException, IOException {
@@ -274,6 +289,7 @@ public class CryptoPrimitives {
 		byte[] cipherText = concat(ivBytes, bOut.toByteArray());
 
 		return cipherText;
+
 	}
 
 	// ***********************************************************************************************//
@@ -296,7 +312,8 @@ public class CryptoPrimitives {
 
 		IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
 		SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
-		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BC");
+		Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "BC");
+
 
 		// Initalization of the Cipher
 		cipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
