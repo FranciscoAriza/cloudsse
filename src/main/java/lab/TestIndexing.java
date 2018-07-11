@@ -19,7 +19,10 @@
  * It outputs two multi-maps: the first associates keywords to the documents identifiers while the second associates the doc identifiers to keywords
  */
 
-package org.crypto.sse;
+package lab;
+
+import org.crypto.sse.TextExtractPar;
+import org.crypto.sse.TextProc;
 
 import java.io.BufferedReader;
 import java.io.File;

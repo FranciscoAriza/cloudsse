@@ -27,7 +27,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>org.crypto.sse.IEX2LevAMAZON</mainClass>
+              <mainClass>lab.Main</mainClass>
             </manifest>
           </archive>
         </configuration>

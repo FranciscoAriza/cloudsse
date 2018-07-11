@@ -32,6 +32,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +53,14 @@ public class DynRH {
 	// This variable keeps track of the retrieved positions for eventual
 	// deletions
 	public static List<Integer> positions = new ArrayList<Integer>();
+
+
+	public static byte[] keyGen(int keySize, String password, String filePathString, int icount)
+			throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
+
+		return TSet.keyGen(keySize, password + "secureIndex", filePathString, icount);
+
+	}
 
 	// ***********************************************************************************************//
 

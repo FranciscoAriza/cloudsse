@@ -15,32 +15,31 @@
  */
 
 //***********************************************************************************************//
-// This file is to test the 2Lev construction by Cash et al. NDSS'14. 
+// This FILE is to test the 2Lev construction by Cash et al. NDSS'14. 
 //**********************************************************************************************
 
-package org.crypto.sse;
+package lab;
 
-import org.apache.commons.collections.bag.SynchronizedSortedBag;
+import org.crypto.sse.RR2Lev;
+import org.crypto.sse.TextExtractPar;
+import org.crypto.sse.TextProc;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.spec.InvalidKeySpecException;
 import java.util.*;
 
-public class TestLocalRR2Lev {
+public class TestRR2Lev {
 
 	private static BufferedReader reader;
 
 	public static final String ALGORITHM = "AES";
 
-	public static void main(String[] args) {
+	public static void menu( ) {
 
 	    reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -78,15 +77,6 @@ public class TestLocalRR2Lev {
                 e.printStackTrace();
             }
 		}
-		
-        try
-        {
-           reader.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
 	}
 
 	public static void test1() throws InputMismatchException, IOException, NumberFormatException
@@ -103,19 +93,21 @@ public class TestLocalRR2Lev {
 		{
 		    key = generateKey();
 
-            System.out.println("Enter the relative path name of the folder that contains the files to make searchable");
+            System.out.println("Enter the relative path name of the FOLDER that contains the files to make searchable");
             String pathName = reader.readLine();
             twolev = buildIndex(key, pathName);
+
+            if(key == null || twolev == null) return;
         }
         else if (option == 2)
         {
-            System.out.println("Enter the relative path name of the file where you previously saved your index.");
+            System.out.println("Enter the relative path name of the FILE where you previously saved your index.");
             String indexPath = reader.readLine();
-            twolev = (RR2Lev) readObject(indexPath);
+            twolev = (RR2Lev) Utils.readObject(indexPath);
 
-            System.out.println("Enter the relative path name of the file that contains the secret key needed to perform your queries.");
+            System.out.println("Enter the relative path name of the FILE that contains the secret key needed to perform your queries.");
             String keyPath = reader.readLine();
-            key = (byte[]) readObject(keyPath);
+            key = (byte[]) Utils.readObject(keyPath);
         }
         else
         {
@@ -157,9 +149,11 @@ public class TestLocalRR2Lev {
         {
             key = generateKey();
 
-            System.out.println("Enter the relative path name of the folder that contains the files that you want to encrypt and make searchable.");
+            System.out.println("Enter the relative path name of the FOLDER that contains the files that you want to encrypt and make searchable.");
             pathName = reader.readLine();
             twolev = buildIndex(key, pathName);
+
+            if(key == null || twolev == null) return;
 
             File dir = new File(pathName);
             File[] filelist = dir.listFiles();
@@ -167,15 +161,15 @@ public class TestLocalRR2Lev {
         }
         else if (option == 2)
         {
-            System.out.println("Enter the relative path name of the file where you previously saved your index.");
+            System.out.println("Enter the relative path name of the FILE where you previously saved your index.");
             String indexPath = reader.readLine();
-            twolev = (RR2Lev) readObject(indexPath);
+            twolev = (RR2Lev) Utils.readObject(indexPath);
 
-            System.out.println("Enter the relative path name of the file that contains the secret key needed to perform your queries.");
+            System.out.println("Enter the relative path name of the FILE that contains the secret key needed to perform your queries.");
             String keyPath = reader.readLine();
-            key = (byte[]) readObject(keyPath);
+            key = (byte[]) Utils.readObject(keyPath);
 
-            System.out.println("Enter the relative path name of the folder with the previously encrypted files.");
+            System.out.println("Enter the relative path name of the FOLDER with the previously encrypted files.");
             pathName = reader.readLine();
         }
         else
@@ -208,11 +202,19 @@ public class TestLocalRR2Lev {
                     i++;
                 }
 
-                decryptFiles(filelistAns, key);
+                System.out.println( );
+                System.out.println("If you want to decrypt the files returned by your query, please enter 1. Otherwise, enter 0.");
+                int decrypt = Integer.parseInt(reader.readLine());
 
-                System.out.println("The files returned by the query have been successfully decrypted.");
+                if(decrypt == 1)
+                {
+                    System.out.println("Enter the relative path name of the FOLDER where you want to save the decrypted files.");
+                    String pathNameDestiny = reader.readLine();
 
-                System.out.println("You can find them in the same origin folder that you previously entered.");
+                    decryptFiles(filelistAns, key, pathNameDestiny);
+
+                    System.out.println("The files returned by the query have been successfully decrypted.");
+                }
             }
             else
             {
@@ -240,10 +242,10 @@ public class TestLocalRR2Lev {
 
             key = RR2Lev.keyGen(128, pass, "salt/salt", 100000);
 
-            System.out.println("Enter the relative path name of the folder where you want to save the secret key");
+            System.out.println("Enter the relative path name of the FOLDER where you want to save the secret key");
 
             String pathName2 = reader.readLine();
-            saveObject(pathName2+"\\key", key);
+            Utils.saveObject(pathName2+"\\key", key);
 
         }
         catch(Exception exp)
@@ -260,9 +262,11 @@ public class TestLocalRR2Lev {
         RR2Lev twolev = null;
         try
         {
-
             ArrayList<File> listOfFile = new ArrayList<File>();
             TextProc.listf(pathName, listOfFile);
+
+            //Removes the whithespaces in the filenames in order to avoid future format problems.
+            Utils.renameFiles(listOfFile);
 
             TextProc.TextProc(false, pathName);
 
@@ -287,14 +291,14 @@ public class TestLocalRR2Lev {
             long output = endTime - startTime;
             System.out.println("Elapsed time in seconds: " + output / 1000000000);
 
-            System.out.println("Enter the relative path name of the folder where you want to save the Index");
+            System.out.println("Enter the relative path name of the FOLDER where you want to save the Index");
 
             String pathName2 = reader.readLine();
-            saveObject(pathName2+"\\index", twolev);
-
+            Utils.saveObject(pathName2+"\\index", twolev);
         }
         catch(Exception exp)
         {
+            System.out.println( );
             System.out.println("An error occurred while generating the index \n");
             System.out.println(exp.getMessage());
         }
@@ -331,14 +335,14 @@ public class TestLocalRR2Lev {
         try
         {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
-            Arrays.asList(filelist).forEach(file -> {
+            Arrays.asList(filelist).forEach(FILE -> {
                 try
                 {
-                    encryptFile(file, cipher, keyBytes, ALGORITHM);
+                    Utils.encryptFile(FILE, cipher, keyBytes, ALGORITHM);
                 }
                 catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException
                         | IOException e) {
-                    System.err.println("Couldn't encrypt " + file.getName() + ": " + e.getMessage());
+                    System.err.println("Couldn't encrypt " + FILE.getName() + ": " + e.getMessage());
                     e.printStackTrace();
                 }
             });
@@ -351,121 +355,29 @@ public class TestLocalRR2Lev {
         }
     }
 
-    public static void decryptFiles(File[] filelist, byte[] keyBytes)
+    public static void decryptFiles(File[] filelist, byte[] keyBytes, String pathFolderDestiny)
     {
+        int files = filelist.length;
+        File[] destinyFiles = new File[files];
+
         try
         {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
-            Arrays.asList(filelist).forEach(file -> {
+            for(int i = 0; i < files; i++)
+            {
+                destinyFiles[i] = new File(pathFolderDestiny + "\\"+ filelist[i].getName());
                 try {
-                    decryptFile(file, cipher, keyBytes, ALGORITHM);
+                    Utils.decryptFile(filelist[i], cipher, keyBytes, ALGORITHM, destinyFiles[i]);
                 } catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException
                         | IOException e) {
-                    System.err.println("Couldn't decrypt " + file.getName() + ": " + e.getMessage());
+                    System.err.println("Couldn't decrypt " + filelist[i].getName() + ": " + e.getMessage());
                 }
-            });
+            }
         }
         catch (NoSuchAlgorithmException | NoSuchPaddingException e)
         {
             System.err.println(e.getMessage());
         }
-    }
-
-
-
-	// ***********************************************************************************************//
-
-	///////////////////// Save Serializable Objects /////////////////////////////
-
-	// ***********************************************************************************************//
-	public static void saveObject(String filePathString, Serializable object)
-	{
-		try
-		{
-			FileOutputStream f = new FileOutputStream(new File(filePathString));
-			ObjectOutputStream o = new ObjectOutputStream(f);
-			o.writeObject(object);
-			o.close();
-			f.close();
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-
-	}
-
-	public static Serializable readObject(String filePathString)
-    {
-        Serializable ans = null;
-        try
-        {
-            FileInputStream fi = new FileInputStream(new File(filePathString));
-            ObjectInputStream oi = new ObjectInputStream(fi);
-
-            // Read objects
-            ans = (Serializable) oi.readObject();
-
-            oi.close();
-            fi.close();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-
-        return ans;
-
-    }
-
-    // ***********************************************************************************************//
-
-    ///////////////////// Encrypt/decrypt files /////////////////////////////
-
-    // ***********************************************************************************************//
-
-    public static void encryptFile(File f, Cipher cipher, byte[] keyBytes, String algorithm)
-            throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException
-    {
-        System.out.println("Encrypting file: " + f.getName());
-        SecretKeySpec key = new SecretKeySpec(keyBytes, 0, keyBytes.length, algorithm);
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        writeToFile(f, cipher);
-    }
-
-    public static void decryptFile(File f, Cipher cipher, byte[] keyBytes, String algorithm)
-            throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException
-    {
-        System.out.println("Decrypting file: " + f.getName());
-        SecretKeySpec key = new SecretKeySpec(keyBytes, 0, keyBytes.length, algorithm);
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        writeToFile(f, cipher);
-    }
-
-    public static void writeToFile(File f, Cipher cipher) throws IOException, IllegalBlockSizeException, BadPaddingException {
-        FileInputStream in = new FileInputStream(f);
-        byte[] input = new byte[(int) f.length()];
-        in.read(input);
-
-        FileOutputStream out = new FileOutputStream(f);
-        byte[] output = cipher.doFinal(input);
-        out.write(output);
-
-        out.flush();
-        out.close();
-        in.close();
     }
 
 }
