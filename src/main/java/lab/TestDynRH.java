@@ -30,7 +30,7 @@ public class TestDynRH {
                 System.out.println("Choose one of the following options: ");
                 System.out.println("1: Test indexing and query");
                 System.out.println("2: Test files encryption and query over those files");
-                System.out.println("0: Exit");
+                System.out.println("0: Return");
                 System.out.println("-----------------------------------------------------------");
 
                 option = Integer.parseInt(reader.readLine());
@@ -52,13 +52,13 @@ public class TestDynRH {
                 }
 
             }
-            catch (IOException e) {
+            catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public static void test1( ) throws InputMismatchException, IOException, NumberFormatException
+    public static void test1( ) throws InputMismatchException, IOException, NumberFormatException, ClassNotFoundException
     {
         System.out.println("If you want to create a new index over your files in order to perform SSE over them, select 1.");
         System.out.println("Otherwise, if you want to work with an existing index, select 2.");
@@ -71,11 +71,13 @@ public class TestDynRH {
         {
             key = generateKey();
 
+            if(key == null) return;
+
             System.out.println("Enter the relative path name of the FOLDER that contains the files to make searchable");
             String pathName = reader.readLine();
             index = buildIndex(key, pathName);
 
-            if(key == null || index == null) return;
+            if(key == null) return;
         }
         else if (option == 2)
         {
@@ -97,11 +99,11 @@ public class TestDynRH {
         while (test1Option != 0)
         {
             System.out.println("-----------------------------------------------------------");
-            System.out.println("Choose one of the following options: ");
+            System.out.println("---------> Choose one of the following options: <----------");
             System.out.println("1: Add new files to your index");
             System.out.println("2: Delete files from your index");
             System.out.println("3: Perform a query over your files using SSE");
-            System.out.println("0: Exit");
+            System.out.println("0: Return");
             System.out.println("-----------------------------------------------------------");
 
             test1Option = Integer.parseInt(reader.readLine());
@@ -139,7 +141,7 @@ public class TestDynRH {
             System.out.println("Enter the relative path name of the FOLDER where you want to save the secret key");
 
             String pathName2 = reader.readLine();
-            Utils.saveObject(pathName2 + "\\key", key);
+            Utils.saveObject(pathName2 + File.separator + "keyDynRH", key);
 
         } catch (Exception exp) {
             System.out.println();
@@ -187,6 +189,11 @@ public class TestDynRH {
             // Empty the previous multimap
             // to avoid adding the same set of documents for every update
 
+            System.out.println("Enter the relative path name of the FOLDER where you want to save the Index");
+
+            String pathName2 = reader.readLine();
+            Utils.saveObject(pathName2+ File.separator +"indexDynRH", emm);
+
             TextExtractPar.lp1 = ArrayListMultimap.create();
 
         }
@@ -225,6 +232,17 @@ public class TestDynRH {
             System.out.println("\nElapsed time in seconds: " + output / 1000000000);
             System.out.println("Number of keywords " + TextExtractPar.lp1.keySet().size());
             System.out.println("Number of pairs " + TextExtractPar.lp1.keys().size());
+
+            System.out.println("Enter the relative path name of the FOLDER where you want to save the updated Index");
+
+            String pathName2 = reader.readLine();
+            Utils.saveObject(pathName2+ File.separator +"indexDynRH", emm);
+
+            // Empty the previous multimap
+            // to avoid adding the same set of documents for every update
+            TextExtractPar.lp1 = ArrayListMultimap.create();
+
+            System.out.println("Your index has been successfully updated!");
         }
         catch (Exception e)
         {

@@ -28,7 +28,7 @@ public class Utils
             name = f.getName();
             if(name.contains(" "))
             {
-                throw new Exception("The name of the FILE --> " + name + " <-- has whitespaces. Please rename the FILE by removing them and try again.");
+                throw new Exception("The name of the file --> " + name + " <-- has whitespaces. Please rename the file by removing them and try again. \n");
             }
         }
     }
@@ -38,53 +38,25 @@ public class Utils
     ///////////////////// Save Serializable Objects /////////////////////////////
 
     // ***********************************************************************************************//
-    public static void saveObject(String filePathString, Serializable object)
+    public static void saveObject(String filePathString, Serializable object) throws Exception
     {
-        try
-        {
-            FileOutputStream f = new FileOutputStream(new File(filePathString));
-            ObjectOutputStream o = new ObjectOutputStream(f);
-            o.writeObject(object);
-            o.close();
-            f.close();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-
+        FileOutputStream f = new FileOutputStream(new File(filePathString));
+        ObjectOutputStream o = new ObjectOutputStream(f);
+        o.writeObject(object);
+        o.close();
+        f.close();
     }
 
-    public static Serializable readObject(String filePathString)
-    {
+    public static Serializable readObject(String filePathString) throws FileNotFoundException, IOException, ClassNotFoundException {
         Serializable ans = null;
-        try
-        {
-            FileInputStream fi = new FileInputStream(new File(filePathString));
-            ObjectInputStream oi = new ObjectInputStream(fi);
+        FileInputStream fi = new FileInputStream(new File(filePathString));
+        ObjectInputStream oi = new ObjectInputStream(fi);
 
-            // Read objects
-            ans = (Serializable) oi.readObject();
+        // Read objects
+        ans = (Serializable) oi.readObject();
 
-            oi.close();
-            fi.close();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-        }
+        oi.close();
+        fi.close();
 
         return ans;
 

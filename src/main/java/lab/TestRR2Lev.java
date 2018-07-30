@@ -20,6 +20,7 @@
 
 package lab;
 
+import com.google.common.collect.ArrayListMultimap;
 import org.crypto.sse.RR2Lev;
 import org.crypto.sse.TextExtractPar;
 import org.crypto.sse.TextProc;
@@ -47,12 +48,12 @@ public class TestRR2Lev {
 
 		while (option != 0) {
 			try {
-				System.out.println("---------------SSE Lab - 2Lev Implementation---------------");
+				System.out.println("--------------- >> SSE Lab - 2Lev Implementation << ---------------");
 				System.out.println("Choose one of the following options: ");
 				System.out.println("1: Test indexing and query");
 				System.out.println("2: Test files encryption and query over those files");
-				System.out.println("0: Exit");
-				System.out.println("-----------------------------------------------------------");
+				System.out.println("0: Return");
+				System.out.println("-------------------------------------------------------------------");
 
 				option = Integer.parseInt(reader.readLine());
 
@@ -73,13 +74,13 @@ public class TestRR2Lev {
                 }
 
 			}
-            catch (IOException e) {
+            catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
 		}
 	}
 
-	public static void test1() throws InputMismatchException, IOException, NumberFormatException
+	public static void test1() throws InputMismatchException, IOException, NumberFormatException, ClassNotFoundException
     {
 
 		System.out.println("If you want to create a new index over your files in order to perform SSE over them, select 1.");
@@ -117,7 +118,7 @@ public class TestRR2Lev {
         int exit = -1;
 
         System.out.println();
-        System.out.println("---------------SSE Lab - Query Tool ---------------\n");
+        System.out.println("--------------- >> SSE Lab - Query Tool << ---------------\n");
 
         while (exit != 0)
         {
@@ -129,12 +130,20 @@ public class TestRR2Lev {
             System.out.println(":::::::::::::::::::::::::::::::::::::::::::\n");
 
 
-            System.out.println("If you want to stop querying, select 0. Otherwise, select any number.");
-            exit = Integer.parseInt(reader.readLine());
+            System.out.println("If you want to stop querying, select 0. Otherwise, select any letter.");
+            try
+            {
+                exit = Integer.parseInt(reader.readLine());
+            }
+            catch(NumberFormatException nfe)
+            {
+                exit = -1;
+            }
+
         }
 	}
 
-	public static void test2( ) throws InputMismatchException, IOException, NumberFormatException
+	public static void test2( ) throws InputMismatchException, IOException, NumberFormatException, ClassNotFoundException
     {
         System.out.println("If you want to encrypt and index a new set of files, select 1.");
         System.out.println("Otherwise, if you want to make queries over a previously encrypted data, select 2.");
@@ -149,11 +158,13 @@ public class TestRR2Lev {
         {
             key = generateKey();
 
+            if(key == null) return;
+
             System.out.println("Enter the relative path name of the FOLDER that contains the files that you want to encrypt and make searchable.");
             pathName = reader.readLine();
             twolev = buildIndex(key, pathName);
 
-            if(key == null || twolev == null) return;
+            if(twolev == null) return;
 
             File dir = new File(pathName);
             File[] filelist = dir.listFiles();
@@ -180,7 +191,7 @@ public class TestRR2Lev {
         int exit = -1;
 
         System.out.println();
-        System.out.println("---------------SSE Lab - Query Tool ---------------\n");
+        System.out.println("--------------- >> SSE Lab - Query Tool << ---------------\n");
 
         while (exit != 0)
         {
@@ -198,7 +209,7 @@ public class TestRR2Lev {
 
                 for(String s: ans)
                 {
-                    filelistAns[i] = new File(pathName+"\\"+s);
+                    filelistAns[i] = new File(pathName + File.separator + s);
                     i++;
                 }
 
@@ -225,8 +236,17 @@ public class TestRR2Lev {
             System.out.println(":::::::::::::::::::::::::::::::::::::::::::\n");
 
 
-            System.out.println("If you want to stop querying, select 0. Otherwise, select any number.");
-            exit = Integer.parseInt(reader.readLine());
+            System.out.println("If you want to STOP QUERYING, select 0. Otherwise, select any letter.");
+
+            try
+            {
+                exit = Integer.parseInt(reader.readLine());
+            }
+            catch(NumberFormatException nfe)
+            {
+                exit = -1;
+            }
+
         }
 
     }
@@ -245,13 +265,15 @@ public class TestRR2Lev {
             System.out.println("Enter the relative path name of the FOLDER where you want to save the secret key");
 
             String pathName2 = reader.readLine();
-            Utils.saveObject(pathName2+"\\key", key);
+            Utils.saveObject(pathName2+ File.separator +"keyRR2Lev", key);
 
         }
         catch(Exception exp)
         {
+            key = null;
             System.out.println("An error occurred while generating the key \n");
             System.out.println(exp.getMessage());
+            System.out.println();
         }
         return key;
 
@@ -294,13 +316,19 @@ public class TestRR2Lev {
             System.out.println("Enter the relative path name of the FOLDER where you want to save the Index");
 
             String pathName2 = reader.readLine();
-            Utils.saveObject(pathName2+"\\index", twolev);
+            Utils.saveObject(pathName2+ File.separator +"indexRR2Lev", twolev);
+
+            // Empty the previous multimap
+            // to avoid adding the same set of documents for every execution
+            TextExtractPar.lp1 = ArrayListMultimap.create();
         }
         catch(Exception exp)
         {
+            twolev = null;
             System.out.println( );
             System.out.println("An error occurred while generating the index \n");
             System.out.println(exp.getMessage());
+            exp.printStackTrace();
         }
         return twolev;
     }
@@ -328,9 +356,7 @@ public class TestRR2Lev {
 
     public static void encryptFiles(File[] filelist, byte[] keyBytes)
     {
-        System.out.println();
-        System.out.println();
-        System.out.println("Beginning of files encryption \n");
+        System.out.println("\n \n Beginning of files encryption \n");
 
         try
         {
@@ -346,8 +372,9 @@ public class TestRR2Lev {
                     e.printStackTrace();
                 }
             });
-            System.out.println();
-            System.out.println("Files encrypted successfully!");
+            System.out.println("\n Files encrypted successfully!");
+            System.out.println("You can find this encrypted versions in the same folder instead of the original files.");
+
         }
         catch (NoSuchAlgorithmException | NoSuchPaddingException e)
         {
@@ -365,7 +392,7 @@ public class TestRR2Lev {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             for(int i = 0; i < files; i++)
             {
-                destinyFiles[i] = new File(pathFolderDestiny + "\\"+ filelist[i].getName());
+                destinyFiles[i] = new File(pathFolderDestiny + File.separator + filelist[i].getName());
                 try {
                     Utils.decryptFile(filelist[i], cipher, keyBytes, ALGORITHM, destinyFiles[i]);
                 } catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException
