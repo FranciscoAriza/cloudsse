@@ -291,7 +291,7 @@ public class TestRR2Lev {
             ArrayList<File> listOfFile = new ArrayList<File>();
             TextProc.listf(pathName, listOfFile);
 
-            //Removes the whithespaces in the filenames in order to avoid future format problems.
+            //Verifies the presence of whithespaces in the filenames in order to avoid future format problems.
             Utils.renameFiles(listOfFile);
 
             TextProc.TextProc(false, pathName);
