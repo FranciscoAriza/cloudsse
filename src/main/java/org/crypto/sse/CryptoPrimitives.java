@@ -661,7 +661,7 @@ public class CryptoPrimitives {
 		try {
 			OutputStream output = null;
 			try {
-				output = new BufferedOutputStream(new FileOutputStream(dirName + "/" + aOutputFileName));
+				output = new BufferedOutputStream(new FileOutputStream(dirName + File.separator + aOutputFileName));
 				output.write(aInput);
 			} finally {
 				output.close();
