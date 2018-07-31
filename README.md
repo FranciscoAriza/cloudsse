@@ -43,16 +43,14 @@ In this Lab, you will test the following SSE schemes:
 + **Dyn2Lev**:  a dynamic variation of \[[CJJJKRS14][CJJJKRS14]], comes with two instantiations, a first instantiation that 
 only handles add operations, and a second one that handles delete operations in addition. Both instantiations have forward-security guarantees but at the cost of more interactions and non-optimality (in the case of delete). 
 
-## Build Instructions (Option 1)
+## Build Instructions (over the Virtual Machine of the course)
 
-+ Install Java (1.7 or above)
-+ Install Maven (3.3.9 or above)
 + Download/Git clone this repository
 + Run below commands to build the jar
 
 	`cd SSELab`
 	
-	`mvn clean install`
+	`mvn clean compile assembly:single`
 	
 	`cd target`
 	
@@ -61,15 +59,27 @@ only handles add operations, and a second one that handles delete operations in 
 + If the above file exists, build was successful and contains all dependencies
 
 
-## Build Instructions (Option 2)
+## Procedure
 
-In order to test the functioning of the schemes shown, while playing with the code, you can use the IDE of your preference to import the project of this repository. Remember that it is a Maven project (It is recommended to use IntelliJ IDEA)
+In order to test the previously introduced schemes, follow the next steps:
 
-## Test
++ Create a new directory and store some input files. You can include .pdf .docx .pptx .html or .txt files. You are going to perform queries over this information, so it is recommended that the files are composed mostly of text.
 
-For a quick test, create folder and store some input files, needed jars and test classes are already created. 
+###### Important: The names of the files should not have whitespaces. 
 
-+ Start by testing the simplest method, by running the TestLocalRR2Lev.java file. Note that in this case the operation is static; so you only have an initial set of documents, then the associated index is created and finally you can search based on keywords of your choice. Study the associated implementation and understand the constructEMMParGMM, token and query methods of the RR2Lev.java class.
++ Create other directory that will contain the key and index files.
+
++ Run the previously generated .jar by executing the command below
+
+	`java -jar SSELab-1.0-SNAPSHOT-jar-with-dependencies.jar`
+
++ Start testing the simplest method, by choosing the first option of the menu displayed. In this case, you can choose between 1. Test indexing and query and 2.Test files encryption and query over those files. The first option create a secure index, but the information is kept in plain text. On the contrary, the second option allows you to encrypt the files.
+
+	Notice that in this case the operation is static; so you only have an initial set of documents, then the associated 		index is created and finally you can search based on keywords of your choice. Study the associated implementation and 		the library use in the generateKey(), buildIndex() and query() methods.
+
+###### Recommendations: 
+1. After the successful generation of the index, verify that it has been correctly stored in the folder you selected along with the secret key. Then, open the file containing the index and notice that it is fully encrypted (so it does not reveal any information about the contents of the files).
+2. 
 
 + Now, try the second scheme that is in the TestLocalDynRH.java class. In this case, you will notice that it is possible to include new files to index or delete previously inserted documents. In order to understand the associated changes and the impact of these updates, be sure to understand the tokenUpdate, resolve and delTokenFS methods of the DynRH.java class.
 
