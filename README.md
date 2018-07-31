@@ -63,7 +63,7 @@ only handles add operations, and a second one that handles delete operations in 
 
 In order to test the previously introduced schemes, follow the next steps:
 
-+ Create a new directory and store some input files. You can include .pdf .docx .pptx .html or .txt files. You are going to perform queries over this information, so it is recommended that the files are composed mostly of text.
++ Create two new directories and store some input files. You can include .pdf .docx .pptx .html or .txt files. You are going to perform queries over this information, so it is recommended that the files are composed mostly of text.
 
 ###### Important: The names of the files should not have whitespaces. 
 
@@ -73,18 +73,14 @@ In order to test the previously introduced schemes, follow the next steps:
 
 	`java -jar SSELab-1.0-SNAPSHOT-jar-with-dependencies.jar`
 
-+ Start testing the simplest method, by choosing the first option of the menu displayed. In this case, you can choose between 1. Test indexing and query and 2.Test files encryption and query over those files. The first option create a secure index, but the information is kept in plain text. On the contrary, the second option allows you to encrypt the files.
++ Start testing the simplest method, by choosing the first option of the main menu. In this case, you can choose between 1. Test indexing and query and 2.Test files encryption and query over those files. The first option create a secure index, but the information is kept in plain text. On the contrary, the second option allows you to encrypt the files.
 
 	Notice that in this case the operation is static; so you only have an initial set of documents, then the associated 		index is created and finally you can search based on keywords of your choice. Study the associated implementation and 		the library use in the generateKey(), buildIndex() and query() methods.
 
 ###### Recommendations: 
 1. After the successful generation of the index, verify that it has been correctly stored in the folder you selected along with the secret key. Then, open the file containing the index and notice that it is fully encrypted (so it does not reveal any information about the contents of the files).
-2. 
 
-+ Now, try the second scheme that is in the TestLocalDynRH.java class. In this case, you will notice that it is possible to include new files to index or delete previously inserted documents. In order to understand the associated changes and the impact of these updates, be sure to understand the tokenUpdate, resolve and delTokenFS methods of the DynRH.java class.
-
-+ Finally, if you want to understand in detail the way in which the corresponding indexes are made, run the TextIndexing.java file.
-
++ Now, try the second scheme by choosing the second option of the main menu. In this case, you will notice that it is possible to update or delete previously indexed documents. In order to understand the associated changes and the impact of these updates, be sure to understand the tokenUpdate, resolve and delTokenFS methods of the DynRH.java class.
 
 ## References
 
