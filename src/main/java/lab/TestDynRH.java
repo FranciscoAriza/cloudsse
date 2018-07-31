@@ -147,6 +147,7 @@ public class TestDynRH {
             System.out.println();
             System.out.println("An error occurred while generating the key \n");
             System.out.println(exp.getMessage());
+            exp.printStackTrace();
         }
         return key;
     }
@@ -202,6 +203,7 @@ public class TestDynRH {
             System.out.println( );
             System.out.println("An error occurred while generating the index \n");
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return emm;

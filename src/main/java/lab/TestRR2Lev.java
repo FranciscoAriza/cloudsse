@@ -94,11 +94,14 @@ public class TestRR2Lev {
 		{
 		    key = generateKey();
 
+		    if(key == null) return;
+
+
             System.out.println("Enter the relative path name of the FOLDER that contains the files to make searchable");
             String pathName = reader.readLine();
             twolev = buildIndex(key, pathName);
 
-            if(key == null || twolev == null) return;
+            if(twolev == null) return;
         }
         else if (option == 2)
         {
@@ -273,6 +276,7 @@ public class TestRR2Lev {
             key = null;
             System.out.println("An error occurred while generating the key \n");
             System.out.println(exp.getMessage());
+            exp.printStackTrace();
             System.out.println();
         }
         return key;
@@ -329,6 +333,7 @@ public class TestRR2Lev {
             System.out.println("An error occurred while generating the index \n");
             System.out.println(exp.getMessage());
             exp.printStackTrace();
+            System.out.println( );
         }
         return twolev;
     }
@@ -349,6 +354,8 @@ public class TestRR2Lev {
         {
             System.out.println("An error occurred while performing your query \n");
             System.out.println(exp.getMessage());
+            exp.printStackTrace();
+            System.out.println( );
         }
         return ans;
 
