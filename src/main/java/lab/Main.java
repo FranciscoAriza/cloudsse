@@ -22,8 +22,8 @@ public class Main
             try {
                 System.out.println("---------------------- >> SSE Lab << ----------------------");
                 System.out.println("Choose one of the following options: ");
-                System.out.println("1: Test the 2Lev implementation");
-                System.out.println("2: Test the DynRH implementation");
+                System.out.println("1: Test the 2Lev implementation (Static scheme)");
+                System.out.println("2: Test the DynRH implementation (Dynamic scheme)");
                 System.out.println("0: Exit");
                 System.out.println("-----------------------------------------------------------");
 

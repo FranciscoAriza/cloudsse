@@ -14,6 +14,8 @@ import java.util.Arrays;
 public class Utils
 {
 
+    public static final String ALGORITHM = "AES";
+
     // ***********************************************************************************************//
 
     ///////////////////// Verify file names in order to detect the presence of whitespaces /////////////
@@ -67,6 +69,60 @@ public class Utils
     ///////////////////// Encrypt/decrypt files /////////////////////////////
 
     // ***********************************************************************************************//
+
+    public static void encryptFiles(File[] filelist, byte[] keyBytes)
+    {
+        System.out.println("\n \n Beginning of files encryption \n");
+
+        try
+        {
+            Cipher cipher = Cipher.getInstance(ALGORITHM);
+            Arrays.asList(filelist).forEach(FILE -> {
+                try
+                {
+                    encryptFile(FILE, cipher, keyBytes, ALGORITHM);
+                }
+                catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException
+                        | IOException e) {
+                    System.err.println("Couldn't encrypt " + FILE.getName() + ": " + e.getMessage());
+                    e.printStackTrace();
+                }
+            });
+            System.out.println("\n Files encrypted successfully!");
+            System.out.println("You can find this encrypted versions in the same folder instead of the original files.");
+
+        }
+        catch (NoSuchAlgorithmException | NoSuchPaddingException e)
+        {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public static void decryptFiles(File[] filelist, byte[] keyBytes, String pathFolderDestiny)
+    {
+        int files = filelist.length;
+        File[] destinyFiles = new File[files];
+
+        try
+        {
+            Cipher cipher = Cipher.getInstance(ALGORITHM);
+            for(int i = 0; i < files; i++)
+            {
+                destinyFiles[i] = new File(pathFolderDestiny + File.separator + "decrypted_" + filelist[i].getName());
+                try {
+                    decryptFile(filelist[i], cipher, keyBytes, ALGORITHM, destinyFiles[i]);
+                } catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException
+                        | IOException e) {
+                    System.err.println("Couldn't decrypt " + filelist[i].getName() + ": " + e.getMessage());
+                }
+            }
+        }
+        catch (NoSuchAlgorithmException | NoSuchPaddingException e)
+        {
+            System.err.println(e.getMessage());
+        }
+    }
+
 
     public static void encryptFile(File f, Cipher cipher, byte[] keyBytes, String algorithm)
             throws InvalidKeyException, IOException, IllegalBlockSizeException, BadPaddingException
