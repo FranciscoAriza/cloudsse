@@ -85,6 +85,8 @@ In order to test the previously introduced schemes, follow the next steps:
 
 + Now, try the second scheme by choosing the second option of the main menu. In this case, you will notice that it is possible to update or delete previously indexed documents (which is why it's a dynamic implementation). In order to understand the associated changes and the impact of these updates, be sure to understand the updateIndex() and deleteElement() methods.
 
+> Notice that, in this case, the second choice (Test files encryption and query over those files) is incomplete, because it is the extension that you must finish. 
+
 ## References
 
 1. \[[CJJJKRS14](https://eprint.iacr.org/2014/853.pdf)\]:  *Dynamic Searchable Encryption in Very-Large Databases: Data Structures and Implementation* by D. Cash, J. Jaeger, S. Jarecki, C. Jutla, H. Krawczyk, M. Rosu, M. Steiner.
