@@ -67,7 +67,7 @@ In order to test the previously introduced schemes, follow the next steps:
 
 ###### Important: The names of the files should not have whitespaces. 
 
-+ Create other directory that will contain the key and index files.
++ Create other directory that will contain the key and index files of both implementations.
 
 + Run the previously generated .jar by executing the command below
 
@@ -75,12 +75,15 @@ In order to test the previously introduced schemes, follow the next steps:
 
 + Start testing the simplest method, by choosing the first option of the main menu. In this case, you can choose between 1. Test indexing and query and 2.Test files encryption and query over those files. The first option create a secure index, but the information is kept in plain text. On the contrary, the second option allows you to encrypt the files.
 
-	Notice that in this case the operation is static; so you only have an initial set of documents, then the associated 		index is created and finally you can search based on keywords of your choice. Study the associated implementation and 		the library use in the generateKey(), buildIndex() and query() methods.
+	Notice that in this case the operation is static; so you only have an initial set of documents, then the associated 		index is created and finally you can search based on keywords of your choice (but you can't make any updates over your 		index). Study the associated implementation and the library used in the generateKey(), buildIndex() and query() methods.
 
 ###### Recommendations: 
 1. After the successful generation of the index, verify that it has been correctly stored in the folder you selected along with the secret key. Then, open the file containing the index and notice that it is fully encrypted (so it does not reveal any information about the contents of the files).
+2. If you chose the second option (Test files encryption and query over those files), after index building, verify that the files were properly encrypted. To do this, try to open them from your preferred editor and notice that it is not possible to see their content. 
 
-+ Now, try the second scheme by choosing the second option of the main menu. In this case, you will notice that it is possible to update or delete previously indexed documents. In order to understand the associated changes and the impact of these updates, be sure to understand the tokenUpdate, resolve and delTokenFS methods of the DynRH.java class.
+	Then, when you perform some queries, you will have the option to decrypt the returned files. Choose this option and 		verify that your files were properly decrypted (seeing that their content is accurate and complete).
+
++ Now, try the second scheme by choosing the second option of the main menu. In this case, you will notice that it is possible to update or delete previously indexed documents (which is why it's a dynamic implementation). In order to understand the associated changes and the impact of these updates, be sure to understand the updateIndex() and deleteElement() methods.
 
 ## References
 
