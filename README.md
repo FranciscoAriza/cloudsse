@@ -73,9 +73,9 @@ In order to test the previously introduced schemes, follow the next steps:
 
 	`java -jar SSELab-1.0-SNAPSHOT-jar-with-dependencies.jar`
 
-+ Start testing the simplest method, by choosing the first option of the main menu. In this case, you can choose between 1. Test indexing and query and 2.Test files encryption and query over those files. The first option create a secure index, but the information is kept in plain text. On the contrary, the second option allows you to encrypt the files.
++ Start testing the first option of the main menu (the static implementation). This option has two possible commands 1. Test indexing and query, 2.Test files encryption and query over those files. The first command creates a secure index, but the information is kept in plain text. The second commands allows you to encrypt the files.
 
-	Notice that in this case the operation is static; so you only have an initial set of documents, then the associated 		index is created and finally you can search based on keywords of your choice (but you can't make any updates over your 		index). Study the associated implementation and the library used in the generateKey(), buildIndex() and query() methods.
+	Notice that in this case the operation is static; first, you give a set of documents; second, the associated index is created; third, you can search based on keywords of your choice. However, you cannot make any updates over your 		index. Study the associated implementation and the library used in the generateKey(), buildIndex() and query() methods.
 
 ###### Recommendations: 
 1. After the successful generation of the index, verify that it has been correctly stored in the folder you selected along with the secret key. Then, open the file containing the index and notice that it is fully encrypted (so it does not reveal any information about the contents of the files).
@@ -83,9 +83,9 @@ In order to test the previously introduced schemes, follow the next steps:
 
 	Then, when you perform some queries, you will have the option to decrypt the returned files. Choose this option and 		verify that your files were properly decrypted (seeing that their content is accurate and complete).
 
-+ Now, try the second scheme by choosing the second option of the main menu. In this case, you will notice that it is possible to update or delete previously indexed documents (which is why it's a dynamic implementation). In order to understand the associated changes and the impact of these updates, be sure to understand the updateIndex() and deleteElement() methods.
++ Now, try the second the second option of the main menu (the dynamic implementation). You will notice that, with the first command of this option, it is possible to create and work with an index and update or delete previously indexed documents (which is why it's a dynamic implementation). In order to understand the associated changes and the impact of these updates, be sure to understand the updateIndex() and deleteElement() methods.
 
-> Notice that, in this case, the second choice (Test files encryption and query over those files) is incomplete, because it is the extension that you must finish. 
+> Notice that, the second command (Test files encryption and query over those files) is incomplete, this is the extension that you must complete. 
 
 ## References
 
