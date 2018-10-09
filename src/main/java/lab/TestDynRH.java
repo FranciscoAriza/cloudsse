@@ -112,6 +112,8 @@ public class TestDynRH {
             test1Option = Integer.parseInt(reader.readLine());
 
             switch(test1Option) {
+                case 0:
+                    break;
                 case 1:
                     System.out.println("Enter the absolute path name of the folder that contains the files to add:");
                     String pathName = reader.readLine();
@@ -196,6 +198,8 @@ public class TestDynRH {
             test2Option = Integer.parseInt(reader.readLine());
 
             switch(test2Option) {
+                case 0:
+                    break;
                 case 1:
                     System.out.println("Enter the absolute path name of the folder that contains the files to add:");
                     pathName = reader.readLine();
