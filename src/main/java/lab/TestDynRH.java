@@ -1,3 +1,7 @@
+/*
+* Modificado por: Francisco A Ariza y Mónica M. Carvajal
+*/
+
 package lab;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -164,6 +168,14 @@ public class TestDynRH {
             if(index == null) return;
 
             //Complete
+            File dir = new File(pathName);
+            File[] filelist = dir.listFiles();
+
+            for (File f : filelist) {
+                directories.put(f.getName(), pathName);
+            }
+
+            Utils.encryptFiles(filelist, key);
         }
         else if (option == 2)
         {
@@ -206,6 +218,14 @@ public class TestDynRH {
                     updateIndex(key, index, pathName);
 
                     //Complete
+                    File dir = new File(pathName);
+                    File[] filelist = dir.listFiles();
+
+                    for (File f : filelist) {
+                        directories.put(f.getName(), pathName);
+                    }
+
+                    Utils.encryptFiles(filelist, key);                   
                     break;
                 case 2:
                     System.out.println("Enter a keyword that appears in some file whose key-value pair you want to delete (only use lowercase letters):");
@@ -256,6 +276,19 @@ public class TestDynRH {
                     if(decrypt == 1)
                     {
                         //Complete
+                        System.out.println("Enter the absolute path name of the FOLDER where you want to save the decrypted files.");
+                        String pathNameDestiny = reader.readLine();
+
+                        File[] filelistAns = new File[ans.size()];
+                        int i = 0;
+
+                        for (String s : ans) {
+                            filelistAns[i] = new File(directories.get(s) + File.separator + s);
+                            i++;
+                        }
+                        Utils.decryptFiles(filelistAns, key, pathNameDestiny);
+
+                        System.out.println("The files returned by the query have been successfully decrypted.");
                     }
                 }
                 catch(InputMismatchException | NumberFormatException e)
